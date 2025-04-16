@@ -274,6 +274,8 @@ export interface ButtonAction {
 ただ、私の経験内ではフロントエンドの実務では
 なかなか上の構成で開発したことがないです。
 
+自分が考えている理由は以下の通りです。
+
 1. コンポーネント化、状態管理、Custom HooksによってDIとDIPの一部が満足できる
 2. Reactはクラス基盤よりHooks、関数基盤コンポーネントをお勧めしている
 3. セキュリティーの理由のため、重要・複札なロジックはバックエンドで担当している
@@ -281,16 +283,55 @@ export interface ButtonAction {
 5. TypeScriptのinterfaceは、コンパイル時にタイプチェックするだけで、ランタイムの時にはタイプが存在しない
 6. ５番の理由で、DIコンテナー不在
 
-上の理由のため、現状一般的なフロントエンド環境では  
-完璧なDIPは不可で`緩やかなDIP`のみ、可能になります。
+もちろん、あくまでも自身の経験に基づいた結論ですので、  
+必ずしも正確とは言えませんが、 
 
-この中で、５、６の場合、プログラミング言語/フレームワークの限界のため、  
-少し細くしたいと思います。
+上の理由のため、現状一般的なフロントエンド環境では  
+完璧なDIPは不可で`緩やかなDIP`のみ、可能になっているではないかと考えております。
+
+ただ、この理由の中で、５、６の場合、プログラミング言語/フレームワークの限界のため、  
+少し細くお話したいと思います。
 
 ### TypeScriptのinterfaceはランタイムでは存在しない/DIコンテナーの不在
 
 JavaScriptは動的にタイプを制御しているため、  
 タイプが存在しないことはご存知かと思います。
+
+```java:
+public class Main {
+    public static void main(String[] args) {
+        int number = 10;
+        String name = "John";
+        boolean isActive = true;
+
+        System.out.println(number);
+        System.out.println(name);
+        System.out.println(isActive);
+    }
+}
+```
+ご覧の通り、静的タイプである**JAVA**は変数を定義する時に  
+`明示的にタイプを設定`する必要があります。
+
+現在はコンパイラの向上でコーディングする時に事前にエラーを出力しますが、
+コンパイラーがコンパイルする段階でエラーが発生してしまいます。
+
+もちろんリターンのタイプ、引数、パラメータも同様です。
+タイプをしっかり設定しないとコンパイルができないです。
+
+```javascript:
+let number = 10;
+const name = "John";
+var isActive = true;
+
+console.log(number);
+console.log(name);
+console.log(isActive);
+```
+動的タイプである`JavaScript`はどうでしょうか。
+
+ご覧の通り、JavaScriptではタイプを設定せず、
+実際アプリが稼働するランタイムの時、JavaScriptエンジンが自動で設定します。
 
 ただし、タイプが存在しないため、  
 ランタイムでのエラーが多く発生してしまい  
